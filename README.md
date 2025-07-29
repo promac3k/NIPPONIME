@@ -66,7 +66,7 @@
 ### **Estrutura de Ficheiros**
 
 ```
-nipponime_final/
+NIPPONIME/
 ├── nipponime/          # Configurações principais do Django
 ├── store/              # App principal da loja
 │   ├── models.py       # Modelos de dados
@@ -90,8 +90,8 @@ nipponime_final/
 ### **1. Clonar o Repositório**
 
 ```bash
-git clone https://github.com/promac3k/nipponime_final.git
-cd nipponime_final
+git clone https://github.com/promac3k/NIPPONIME.git
+cd NIPPONIME
 ```
 
 ### **2. Criar Ambiente Virtual**
@@ -223,24 +223,9 @@ Este projeto foi desenvolvido como PAP individual, mas sugestões e melhorias s�
 
 Este projeto está sob a licença MIT. Veja o ficheiro `LICENSE` para mais detalhes.
 
-## 👨‍💻 Autor
-
-**Gustavo Antunes**
-
--   🎓 Projeto de Aptidão Profissional - 12º Ano (2023)
--   📧 Email: [seu-email@exemplo.com]
--   🔗 LinkedIn: [seu-linkedin]
--   🐙 GitHub: [@promac3k](https://github.com/promac3k)
-
 ---
 
 > _"Este projeto marca o início da minha jornada no desenvolvimento web com Python e Django. Representou não apenas uma avaliação académica, mas o primeiro passo numa paixão que continua a crescer."_
-
-## 🙏 Agradecimentos
-
--   Aos professores que me orientaram durante o desenvolvimento
--   À comunidade Django pela excelente documentação
--   A todos que testaram e deram feedback sobre a aplicação
 
 ---
 
