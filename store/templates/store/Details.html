@@ -1,0 +1,94 @@
+{% extends 'store/Main.html' %}
+{% load static %}
+{% load tags %}
+{% block content %}
+
+    <script>
+      document.body.style.backgroundImage = "url('{{ product.imagebkURL }}')";   
+    </script>
+
+    <h1 class="display-4 px-4 py-5">PRODUTO</h1>
+    <div class="row mb-5 px-4">
+      <div class="col-lg-3">
+      </div>
+        <div class="col-lg-6">
+            <span class="badge badge-info notify-badge">{{product.category}}</span>
+            <img class="img-thumbnail mx-auto d-block" style="height:550px; width:390px" src="{{ product.imageURL }}">
+            <div class="box-element product">
+                <p class="lead">{{product.name}}</p>
+                <p><small><b>Autor</b>: {{ product.author }}</small></p>
+                <hr>
+                <p><small><b>Géneros</b>: <a style="text-decoration: none !important; color: inherit;"  href="{% url 'mangas' product.main_category.slug %}">{{ product.main_category }}</a>{% for sub in product.sub_category.all %}<a style="text-decoration: none !important; color: inherit;" href="{% url 'mangas' sub.slug %}">, {{ sub.name }}</a>{% endfor %}  </small></p>
+        		    <hr>
+                {% if product.description != none %}
+                  <p class="lead">{{product.description|linebreaks }}</p>
+                  <hr>
+                {% endif %}
+                {% if product.pages != none %}
+                  <p><small><b>Páginas</b> : {{product.pages }}</small></p>
+                {% endif %}
+                {% if product.format != none %}
+                  <p><small><b>Formato</b> : {{product.format }}</small></p>
+                {% endif %}
+                {% if product.ean != none %}
+                  <p><small><b>Ean</b> : {{product.ean }}</small></p>
+                {% endif %}
+                <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Adicionar</button>
+                <input id="QT{{product.id}}" type="number" min="1" max="9"  step="1" value="1" class="center" style="position:relative; top:3px;width: 2.2em; height:2.4em;border: 1px solid #28a745;border-radius: 4px;">
+                  
+                <h4 style="display: inline-block; float: right">
+                        {% if product.is_promo %}
+                        <span class="badge notify-promo" style="right:30px; top:20px;"><a href="{% url 'mangas' 'promo' %}" style="color: inherit;text-decoration:none;">Promoção</a></span>
+                        <small class="text-muted"><del>{{product.price}}€ </del></small>
+                        {% endif %}
+                      <strong>
+                        {{product.getPrice}} €
+                      </strong>
+                    </h4>
+            </div>
+        </div>
+      <div class="col-lg-3">
+      </div>
+    </div>
+    <hr>
+  <p class="lead px-4">Outras Sugestões</p>
+<div class="container text-center px-4 mb-3">
+  <div class="row mx-auto my-auto" style="height:300px">
+    <div id="myCarousel" class="carousel slide w-100" data-ride="carousel">
+      <div class="carousel-inner" role="listbox">
+          {% for group in groups %}
+              {% if group == groups.0 %}
+                <div class="carousel-item active py-5">
+              {% else %}
+                <div class="carousel-item py-5">
+              {% endif %}
+                  <div class="row">
+                    {% for product1 in group %}
+                      {% if product1.id != product.id %}
+                          <div class="col-3">                        
+                              <div>
+                                <a href="{% url 'details' product1.slug %}"><img class="img-thumbnail" style="max-width: 150px;" src="{{ product1.imageURL }}"></a>
+                              </div>
+                          </div>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>      
+        {% endfor %}             
+      </div>
+    </div>
+  </div>
+    <div class="row" style="height:15px">
+        <div class="col-12">
+            <a class="carousel-control-prev text-dark" href="#myCarousel" role="button" data-slide="prev">
+                <ion-icon name="arrow-back-outline"></ion-icon>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next text-dark" href="#myCarousel" role="button" data-slide="next">
+                <ion-icon name="arrow-forward-outline"></ion-icon>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

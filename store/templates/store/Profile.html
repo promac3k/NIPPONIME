@@ -1,0 +1,183 @@
+{% extends 'store/Main.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+      <h1 class="display-4 px-4 py-5">PERFIL</h1>
+      <div class = "row px-4">
+        <div class="col-lg-12 border rounded shadow-sm">
+          <p class="lead mt-3">Minha Conta</p>
+          <hr>
+          <table class="table table-responsive-lg">
+            <thead class="thead-light">
+              <tr>
+                  <th scope="col">Usuario</th>
+                  <th scope="col">Nome</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">NIF</th>
+                  <th scope="col">editar</th>
+                </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">{{ customer.user.username }}</th>
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.user.email }}</td>
+                <td>{{ customer.nif }}</td>
+                <td><a data-toggle="collapse" href="#collapseCliente" role="button" aria-expanded="false" aria-controls="collapseCliente" class="btn btn-outline-success btn-sm float-center" href="{% url 'client' user.id %}"><ion-icon name="person-outline"></ion-icon></a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class = "row px-5 mt-3 mb-3">
+        <div class="col-lg-2">
+          
+        </div>
+        <div class="col-lg-8">
+          <div class="collapse" id="collapseCliente">
+          <div class="card card-body shadow rounded" style="border:1px solid #dee2e6">
+            <form method="POST" class="form-inline">
+          		{% csrf_token %}
+          		{{ form|crispy }}                    
+          		<button class="btn btn-primary" type="submit">Gravar</button>
+          	</form>
+          </div>
+        </div>
+        </div>
+        <div class="col-lg-2">
+          
+        </div>       
+      </div>
+      <div class = "row px-4">
+        <div class="col-lg-12 border rounded shadow-sm">
+          <p class="lead mt-3">Meus Pedidos</p>
+          <hr>
+          <table class="table table-hover table-responsive-lg">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col"><ion-icon name="chevron-down-outline"></ion-icon>  Id</th>
+                  <th scope="col"><ion-icon name="at-outline"></ion-icon>  Transação</th>
+                  <th scope="col"><ion-icon name="calendar-number-outline"></ion-icon>  Data</th>
+                  <th scope="col"><ion-icon name="bag-add-outline"></ion-icon>  Items</th>
+                  <th scope="col"><ion-icon name="bag-check-outline"></ion-icon>  Total</th>
+                  <th scope="col"><ion-icon name="pricetag-outline"></ion-icon>  Enviado Para</th>
+                  <th scope="col"><ion-icon name="card-outline"></ion-icon>  Pagamento</th>
+                  <th scope="col"><ion-icon name="information-circle-outline"></ion-icon> Estado</th>
+                  <th scope="col"><ion-icon name="cloud-download-outline"></ion-icon> Factura</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for address in shippingaddress %}
+                  {% if address.order.get_cart_total  > 0 %}
+                    <tr>
+                      <th scope="row">{{ address.id}}</th>
+                      <td><small>{{ address.order.transaction_id}}</small></td>
+                      <td><small>{{ address.date_added}}</small></td>
+                      <td>{{ address.order.get_cart_items}}</td>
+                      <td>{{ address.order.get_cart_total}}€</td>
+                      <td>{{ address.city }}</td>
+                      {% if address.order.complete == True %}
+                        <td>Sim</td>
+                      {% else %}
+                        <td>Não</td>
+                      {% endif %}              
+                      <td>{{ address.order.status }}</td>
+                      <td>
+                        {% if address.order.invoice %}
+                        <a href="{{ address.order.invoice.url }}" target="_blank">Fatura</a>
+                        {% endif %}
+                      </td>
+                    </tr>
+                  {% endif %}
+                {% endfor %}
+              </tbody>
+          </table> 
+        </div>
+      </div>
+      <div class = "row px-4">
+        <div class="col-lg-12 border rounded shadow-sm">
+          <p class="lead mt-3">Meus Favoritos</p>
+          <hr>
+          <table class="table table-hover table-responsive-lg">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col" style="text-align:center">Link</th>
+                  <th scope="col" style="text-align:center">Imagem</th>
+                  <th scope="col" style="text-align:center">Nome</th>
+                  <th scope="col" style="text-align:center">Preço</th>
+                  <th scope="col" style="text-align:center">Promoção</th>   
+                  <th scope="col" style="text-align:center"></th> 
+                </tr>
+              </thead>
+              <tbody>
+                {% for product in customer.favorites.all %}           
+                    <tr>
+                      <th scope="row"><a class="btn btn-outline-success" href="{% url 'details' product.slug %}"><ion-icon style="color:green" name="reader-outline">></ion-icon></a></th>
+                      <td><img class="img-thumbnail row-image" src="{{ product.imageURL}}"></td>
+                      <td><small>{{ product.name}}</small></td>
+                      <td>{{ product.getPrice}}€</td>
+                      <td>
+                        {% if product.IsPromo %}
+                        <p>Sim</p> 
+                        {% else %}
+                        <p>Não</p> 
+                        {% endif %}
+                      </td>
+                      <td><button id="fav{{product.id}}" title="Remover dos Favoritos" data-action="remove" data-cliente="{{customer.id}}" data-product="{{product.id}}" class="update-favs btn btn-outline-secondary btn-sm float-center"><ion-icon name="remove-circle"></ion-icon></button> </td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+          </table> 
+        </div>
+      </div>
+      <div class = "row px-4 mb-5">
+        <div class="col-lg-12 border rounded shadow-sm">
+          <p class="lead mt-3">Minhas Mensagens</p>
+          <hr>
+          <table class="table table-hover table-responsive-lg">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col" style="text-align:center">De</th>
+                  <th scope="col" style="text-align:center">Data</th>
+                  <th scope="col" style="text-align:center">Titulo</th>
+                  <th scope="col" style="text-align:center">Mensagem</th>
+                  <th scope="col" style="text-align:center"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for message in mensagens %}  
+                  {% if message.archive != True %} 
+                      <tr>
+                        <th scope="row">{{ message.who}}</th>
+                        <th scope="row"><small>{{ message.date_added}}</small></th>
+                        <td>{{ message.title}}</td>
+                        <td style="text-align:left"><small>{{ message.message|linebreaks }}</small></td>
+                        <td><button title="Arquivar mensagem" data-action="remove" data-id="{{message.id}}" class="btn-sm btn btn-primary float-right" onclick="arquivar(this);"><ion-icon name="archive-outline" style="color:white"></ion-icon></button></td>
+                      </tr>
+                  {% endif %}
+                {% endfor %}
+              </tbody>
+          </table> 
+        </div>
+      </div>      
+      <script>
+          let arquivar = button => {
+          let id = button.getAttribute('data-id');                       
+          let url = '/mensagens/';
+          alert("Iremos arquivar a mensagem! " + "\r\n" );    
+           fetch(url, {
+      			method:'POST',
+      			headers:{
+      				'Content-Type':'application/json',
+      				'X-CSRFToken':csrftoken,
+          			}, 
+          			body:JSON.stringify({'id':id,})
+          		}).then((response) => {
+          		   return response.json();
+          		}).then((data) => {
+          		    location.reload()
+          		});
+          }
+      </script>
+{% endblock content %}

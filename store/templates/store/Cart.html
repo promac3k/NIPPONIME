@@ -1,0 +1,84 @@
+{% extends 'store/Main.html' %}
+{% load static %}
+{% block content %}
+    <h1 class="display-4 px-4 py-5">Carrinho</h1>
+    <div class="row px-4">
+	     <div class="col-lg-12">
+		      <div class="box-element">
+            <a  class="btn btn-outline-dark" href="{% url 'store' %}">&#x2190; Continuar compra</a>
+	           <br>
+	           <br>
+	           <table class="table">
+		            <tr>
+			           <th>
+                   <h5>Items: <strong>{{order.get_cart_items}}</strong>
+                   </h5>
+                 </th>
+			           <th>
+                   <h5>Total: <strong>{{order.get_cart_total|floatformat:2}}€</strong>
+                   </h5>
+                 </th>
+			           <th>
+                   {% if items %}
+                    <a style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Finalizar</a>
+                   {% endif %}
+                 </th>
+                </tr>
+             </table>            
+		      </div>
+		      <br>
+    {% if items %}
+  		<div class = "row px-3">
+        <div class="col-lg-12 border rounded shadow-sm">
+          <table id="myTable" class="table table-hover table-responsive-lg table-borderless">
+              <thead class="">
+                <tr>
+                  <th scope="col" style="text-align:center"></th> 
+                  <th scope="col" style="text-align:center">Item</th>
+                  <th scope="col" style="text-align:center">Preço</th>
+                  <th scope="col" style="text-align:center">Quantidade</th>
+                  <th scope="col" style="text-align:center"></th>   
+                  
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in items %}           
+                    <tr>
+                      
+                      <td><img class="img-thumbnail row-image" src="{{item.product.imageURL}}"></td>
+                      <td><small>{{item.product.name}}</small></td>
+                      <td>{{ item.product.price|floatformat:2}}€</td>
+                      <td>
+                        <div class="row justify-content-center align-items-center">
+                          <div class="py-5">
+                            <span class="quantity">{{item.quantity}}</span>
+                          </div>
+                          <div>
+                            <div class="quantity" class="">
+                				      <img data-product="{{item.product.id}}" data-action="add" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}" style="margin-top:5px">
+                		
+                				      <img data-product="{{item.product.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}">
+                			      </div>
+                          </div>
+                        </div>
+                        
+            			      
+                      </td>
+                      <td><button type="button" data-product="{{item.product.id}}" data-action="remove" data-quantity="{{item.quantity}}" class="btn btn-outline-danger btn-sm delete-allitems"><ion-icon style="color:red" name="trash-outline"></ion-icon></button></td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+          </table> 
+        </div>
+      </div>
+    {% endif %}
+        <script>
+          var table = document.getElementById("myTable");
+          if (table.getElementsByTagName("tr").length <= 1) {
+            table.style.display = "none";
+          }
+        </script>
+	    </div>
+    </div>
+
+{% endblock content %}

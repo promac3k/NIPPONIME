@@ -1,0 +1,98 @@
+{% extends 'store/Main.html' %}
+{% load static %}
+{% load tags %}
+{% block content %}
+
+    <h1 class="display-5 px-4 py-3">Por status:</h1>
+    <div class="px-4 text-left">
+      <a class="btn btn-warning me-2" href="{% url 'mangas' 'all' %}" id="coisas">Todos</a>   
+      <a class="btn btn-warning me-2" href="{% url 'mangas' 'promo' %}" id="coisas">Promoções</a>  
+    </div>
+
+    <h3 class="display-5 px-4 py-3">Por generos:</h3>
+    <div class="px-4 m-1 text-left">
+      {% for cat in category %}
+        <a class="btn btn-warning me-2" style="margin-bottom: 5px;" href="{% url 'mangas' cat.slug %}" id="coisas">{{ cat.name }}</a>
+      {% endfor %}
+    </div>
+    <script>
+          var buttons = document.getElementsByClassName("btn-warning");
+          const url = window.location.href;
+          
+          for(var i = 0; i <= buttons.length; i++)  {
+            if (url.includes(coisas[i].href) ){
+              coisas[i].classList.remove('btn-warning');
+              coisas[i].classList.add('btn-danger')
+            }
+          }
+    </script>
+
+     <hr>
+     <div class="row px-4 mb-5">
+       {% for product in page_obj %}
+	     <div class="col-lg-4 mb-3">
+         {% if product.tag %}
+            <span class="badge notify-tag" style="right:auto; left:260px; top:20px;">{{product.tag}}</span>
+          {% endif %}
+          <div class="embed-responsive-item justify-content-center d-flex">
+              <img class="img-thumbnail" src="{{product.imageURL}}" style="height:300px; width:200px ">
+          </div>
+          <div class="box-element product">
+        		<h6><strong>{{product.name}}</strong></h6>
+        		<hr>
+        
+        		<button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Adicionar</button>
+        		<a class="btn btn-outline-success" href="{% url 'details' product.slug %}">Detalhes</a>
+        		<h4 style="display: inline-block; float: right"><strong>{{product.getPrice|floatformat:2}}€</strong></h4>
+            {% if customer %} 
+              {% if customer|is_Favorite:product.id %}
+                <button id="fav{{product.id}}" data-action="remove" data-cliente="{{customer.id}}" data-product="{{product.id}}" class="update-favs btn btn-outline-secondary"><ion-icon style="color:red" name="heart" size="small"></ion-icon></button>                             
+              {% else %}
+                <button id="fav{{product.id}}" data-action="add" data-cliente="{{customer.id}}" data-product="{{product.id}}" class="update-favs btn btn-outline-secondary"><ion-icon name="heart-outline" size="small"></ion-icon></button>                              
+              {% endif %}                                   
+            {% else %}
+              <button id="fav{{product.id}}" data-action="add" data-cliente="{{customer.id}}" data-product="{{product.id}}" class="update-favs btn btn-outline-secondary"><ion-icon name="heart-outline" size="small"></ion-icon></button>
+            {% endif %}
+        	</div>
+	     </div>
+       {% endfor %}
+    </div>
+
+    {% comment %} Page navigation {% endcomment %}
+
+    <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-center pagination-sm">
+            {% if page_obj.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Anterior</a>
+              </li>
+            {% endif %}
+            {% for i in page_obj.paginator.page_range %}
+              {% if page_obj.number == i %}
+                <li class="page-item active" aria-current="page">
+                  <span class="page-link">
+                    {{ i }}
+                    <span class="sr-only">(current)</span>
+                  </span>
+                </li>
+              {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Próximo</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Próximo</a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+
+{% endblock content %}

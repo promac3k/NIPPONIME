@@ -1,0 +1,16 @@
+run = "python3 manage.py runserver 0:8000"
+language = "python3"
+entrypoint = "manage.py"
+hidden = ["venv", ".config", "**/__pycache__", "**/.mypy_cache", "**/*.pyc", "**/migrations"]
+
+[nix]
+channel = "stable-22_11"
+
+[languages.python3]
+pattern = "**/*.py"
+syntax = "python"
+  [languages.python3.languageServer]
+  start = ["pyls"]
+
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix", ".config", "venv"]

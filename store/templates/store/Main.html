@@ -1,0 +1,160 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>Nipponime 2023</title>
+      <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="41e69b7b-e657-4b73-85f6-3151dda6270d" data-blockingmode="auto" type="text/javascript"></script>
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+      <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+      <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favico.png' %} ">
+      
+      <script type="text/javascript">
+        
+		    var user = '{{request.user}}'
+        
+        function getToken(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') { 
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Essa string de cookie começa com o nome que queremos?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+          return cookieValue;
+        }
+        var csrftoken = getToken('csrftoken')
+
+        function getCookie(name) {
+            // Divida a string do cookie e obtenha todos os pares nome=valor individuais em uma matriz
+            var cookieArr = document.cookie.split(";");
+        
+            // Percorra os elementos do array
+            for(var i = 0; i < cookieArr.length; i++) {
+                var cookiePair = cookieArr[i].split("=");
+        
+                /* Removendo espaços em branco no início do nome do cookie
+                e compará-lo com a string dada */
+                if(name == cookiePair[0].trim()) {
+                    // Decodifique o valor do cookie e retorne
+                    return decodeURIComponent(cookiePair[1]);
+                }
+            }
+        
+            // Retorna null se não for encontrado
+            return null;
+        }
+        var cart = JSON.parse(getCookie('cart'))
+
+        if (cart == undefined){
+        	cart = {}
+        	console.log('Carrinho Criado!', cart)
+        	document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+        }
+        //console.log('Cart:', cart)
+
+ 
+      </script>
+      
+    </head>
+
+  
+    <body>
+      <nav class="navbar navbar-expand-lg container fixed-top navbar-dark  bg-dark px-4">
+        <a class="navbar-brand" href="{% url 'store' %}">Nipponime</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'store' %}">Loja <span class="sr-only">(current)</span></a>
+            </li>
+             <li class="nav-item">
+              <a class="nav-link" href="{% url 'mangas' 'all' %}">Mangas </a>
+            </li>
+             <li class="nav-item">
+              <a class="nav-link" href="{% url 'contact' %}">contactos </a>
+            </li>
+           
+          </ul>
+          <div class="form-inline my-2 my-lg-0">
+            <div class="input-group mr-2">
+              <form class="form-inline my-2 my-lg-0" action="{% url 'procura' %}">
+                      <input class="form-control mr-sm-2" type="search" placeholder="Procurar..." name="search">
+                      <button class="btn btn-light ml-1 mr-1" type="submit"><ion-icon name="search"></ion-icon></button>
+              </form>  
+            </div>
+     	      {% if user.is_authenticated %}
+              <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   {{ user.username }}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="{% url 'profile' user.id %}">Minha Conta</a>
+                  {% if user.is_staff %}
+                    <a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a>
+                  {% endif %}              
+                    <a class="dropdown-item" href="{% url 'logout' %}">Sair</a>
+                </div>
+              </div>                
+              {% else %}
+                <a href="{% url 'login' %}" class="btn btn-warning">Login </a> 
+              {% endif %}
+            
+           	<a href="{% url 'cart' %}">
+          		<img  id="cart-icon" src="{% static 'images/cart.png' %}">
+          	</a>
+          	{% if cartItems == null %}
+              <p id="cart-total">0</p> 
+            {% else %}
+              <p id="cart-total">{{cartItems}}</p> 
+            {% endif %} 
+
+          </div>
+        </div>
+      </nav>
+      
+      <div class="container mt-4 bg-white shadow">
+        <br>
+        {% block content %}
+
+        {% endblock content %}
+        {% comment %} Rodapé {% endcomment %}
+        <footer class="page-footer font-small bg-light mt-auto text-gray">
+              <div class="row px-5">
+                <div class="col-lg-4 col align-self-center" style="height:250px"></div>
+                <div class="col-lg-4 col align-self-center">
+                  <div class="footer-copyright text-center py-3">
+                    <p class="font-weight-lighter">© 2023 Copyright Gustavo Antunes,</p> 
+                    <p class="font-weight-lighter">Django Software Foundation</p>
+                    <p class="font-weight-lighter">
+                      
+                    </p>
+                  </div>
+                </div>
+                <div class="col-lg-4 col align-self-center"></div>
+              </div>
+              
+            </footer>
+      </div>
+
+      
+      <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    
+    	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    
+    	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+      
+      <script type="text/javascript" src="{% static 'js/cart.js' %}"></script> 
+      <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+      <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    </body>
+</html>

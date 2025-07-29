@@ -1,0 +1,5 @@
+Django==3.2.16
+django-crispy-forms==1.14.0
+django-extensions==3.2.0
+Pillow==9.2.0
+python-decouple==3.6

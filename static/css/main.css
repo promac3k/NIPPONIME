@@ -1,0 +1,171 @@
+body{
+	background-color: hsl(0, 0%, 98%);
+  background-image: url("/static/images/boxed_bg.jpg");
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center center;
+  overflow-y: scroll;
+  
+}
+
+.container {
+    width: 100%;
+    padding-right: 0px; 
+    padding-left: 0px; 
+    margin-right: auto;
+    margin-left: auto;
+}
+
+h1,h2,h3,h4,h5,h6{
+	color:hsl(0, 0%, 30%);
+}
+
+.box-element{
+	box-shadow:hsl(0, 0%, 80%) 0 0 16px;
+	background-color: #fff;
+	border-radius: 4px;
+	padding: 10px;
+}
+
+.thumbnail{
+	-webkit-box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
+  -moz-box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
+  box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
+}
+
+.product{
+	border-radius: 0 0 4px 4px;
+}
+
+
+#cart-icon{
+	width:25px;
+	display: inline-block;
+	margin-left: 15px;
+}
+
+#cart-total{
+	display: block;
+	text-align: center;
+	color:#fff;
+	background-color: red;
+	width: 25px;
+	height: 25px;
+	border-radius: 25%;
+	font-size: 15px;
+  
+}
+
+.col-lg-4, .col-lg-6, .col-lg-8, .col-lg-12{
+	margin-top: 10px;
+}
+
+
+.row-image{
+	width: 100px;
+}
+
+.form-field{
+	width:250px;
+	display: inline-block;
+	padding: 5px;
+}
+
+.cart-row{
+	display: flex;
+    
+    align-items: flex-stretch;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ececec;
+    text-align:center;
+    
+}
+
+.quantity{
+	display: inline-block;
+	font-weight: 700;
+	padding-right:10px;
+	
+
+}
+
+.chg-quantity{
+	width: 12px;
+	cursor: pointer;
+	display: block;
+	margin-top: 5px;
+	transition:.1s;
+}
+
+.chg-quantity:hover{
+	opacity: .6;
+}
+
+
+.hidden{
+	display: none!important;
+}
+
+.notify-badge{
+    position: absolute;
+    right:10px;
+    top:10px;
+    background:#2c3e50;
+    text-align: center;
+    border-radius: 5px 5px 5px 5px;
+    color:white;
+    padding:5px 10px;
+    font-size:15px;
+}
+
+.notify-tag{
+  position: absolute;
+  background:#969696;
+  color:#ffffff;
+  text-align: center;
+  right:10px;
+  top:40px;
+  font-size:15px;
+}
+
+.form-inline .form-group {
+  margin-right:10px;
+}
+
+.card-body {
+    padding: 0.8rem;
+}
+
+.table td, .table th {
+    padding: 0.75rem;
+    vertical-align: middle;
+    text-align:center;
+    border-top: 1px solid #dee2e6;
+}
+
+.notify-promo{
+  position: absolute;
+  background:#eb0000;
+  color:white;
+  text-align: center;
+  right:10px;
+  top:40px;
+  font-size:15px;
+}
+
+/* ensures the increment/decrement arrows always display */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+.display-5{
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1.1;
+}
+
+ion-icon {
+ pointer-events: none;
+}
